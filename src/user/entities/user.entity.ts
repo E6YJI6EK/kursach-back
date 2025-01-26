@@ -1,10 +1,19 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {OrganizationEntity} from "../../organization/entities/organization.entity";
-import {Role} from "../enums/roles.enum";
-import * as bcrypt from 'bcryptjs';
-import {FilialEntity} from "../../organization/entities/filial.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { OrganizationEntity } from "../../organization/entities/organization.entity";
+import { Role } from "../enums/roles.enum";
+import * as bcrypt from "bcryptjs";
+import { PatientEntity } from "./patient.entity";
+import { DoctorEntity } from "./doctor.entity";
+import {MedregistratorEntity} from "./medregistrator.entity";
 
-@Entity('users')
+@Entity("users")
 export class UserEntity {
   @PrimaryGeneratedColumn()
   user_id: number;
@@ -24,11 +33,17 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({enum: Role})
+  @Column({ enum: Role })
   role: Role;
 
-  @ManyToOne(() => FilialEntity, (filial) => filial.users)
-  filial: FilialEntity;
+  // @OneToOne(() => PatientEntity, (p) => p.user)
+  // patient: PatientEntity;
+  //
+  // @OneToOne(() => DoctorEntity, (d) => d.user)
+  // doctor: DoctorEntity;
+  //
+  // @OneToOne(() => MedregistratorEntity, (m) => m.user)
+  // medRegistrar: MedregistratorEntity;
 
   @ManyToOne(() => OrganizationEntity, (org) => org.users)
   organization: OrganizationEntity;

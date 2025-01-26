@@ -13,8 +13,6 @@ export class FilialEntity {
   @Column()
   phone_number: string;
 
-  @OneToMany(() => UserEntity, (user) => user.filial)
-  users: UserEntity[];
 
   @ManyToOne(() => OrganizationEntity, (org) => org.filials)
   organization: OrganizationEntity;

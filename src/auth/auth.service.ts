@@ -17,6 +17,10 @@ export class AuthService {
     return await this.userService.findById(userId);
   }
 
+  async register(registerDto) {
+
+  }
+
   async login(loginDto: LoginUserDto): Promise<UserJwtResponse> {
     const userResult = await this.userService.signIn(loginDto);
 

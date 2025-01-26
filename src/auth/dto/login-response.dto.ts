@@ -7,6 +7,5 @@ export class LoginResponseDto {
   lastName: string;
   patronymic: string | null;
   organizationId: number;
-  filialId: number;
   role: Role;
 }

@@ -1,19 +1,24 @@
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {DoctorEntity} from "../../doctor/entities/doctor.entity";
-import {PatientEntity} from "../../patient/entities/patient.entity";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {DoctorEntity} from "../../user/entities/doctor.entity";
+import {PatientEntity} from "../../user/entities/patient.entity";
+import {DocumentEntity} from "../../files/entities/document.entity";
 
 @Entity('events')
 export class EventEntity {
   @PrimaryGeneratedColumn()
   event_id: number;
 
-  @ManyToOne(() => DoctorEntity)
-  @JoinColumn({ name: 'doctor_id' })
+  @ManyToOne(() => DoctorEntity, (doc) => doc.event)
+  @JoinColumn()
   doctor: DoctorEntity;
 
-  @ManyToOne(() => PatientEntity)
-  @JoinColumn({ name: 'patient_id' })
+  @ManyToOne(() => PatientEntity, (patient) => patient.event)
+  @JoinColumn()
   patient: PatientEntity;
+
+  @OneToMany(() => DocumentEntity, (document) => document.event)
+  @JoinColumn()
+  documents: DocumentEntity[];
 
   @Column()
   event_date: Date;

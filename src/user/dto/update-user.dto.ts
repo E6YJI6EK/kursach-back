@@ -1,8 +1,8 @@
-import {IsString, MinLength, MaxLength, IsNotEmpty, IsEnum, IsNumber} from 'class-validator';
-import {Role} from "../../user/enums/roles.enum";
 import {ApiProperty} from "@nestjs/swagger";
+import {IsEnum, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength} from "class-validator";
+import {Role} from "../enums/roles.enum";
 
-export class CreateUserDto {
+export  class UpdateUserDto {
   @ApiProperty({})
   @IsString()
   @IsNotEmpty()
@@ -40,9 +40,5 @@ export class CreateUserDto {
   @IsNumber()
   @IsNotEmpty()
   filialId: number;
-
-  @ApiProperty({})
-  @IsNumber()
-  @IsNotEmpty()
-  organizationId: number;
 }
+
