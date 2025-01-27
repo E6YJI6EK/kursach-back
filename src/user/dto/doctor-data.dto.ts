@@ -5,8 +5,8 @@ import { Type } from "class-transformer";
 
 export class DoctorDataDto {
   @ApiProperty({})
-  @IsString()
-  specialization: string;
+  @IsNumber()
+  specializationId: number;
 
   @ApiProperty({ type: Array<DocumentDto> })
   @IsArray()

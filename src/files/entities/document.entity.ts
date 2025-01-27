@@ -23,7 +23,7 @@ export class DocumentEntity {
   @JoinColumn()
   doctor: DoctorEntity;
 
-  @ManyToOne(() => EventEntity, (event) => event.documents)
+  @ManyToOne(() => EventEntity, (event) => event.documents, { cascade: true })
   @JoinColumn()
   event: EventEntity;
 }

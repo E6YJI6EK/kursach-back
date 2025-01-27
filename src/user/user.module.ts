@@ -10,6 +10,7 @@ import { PatientEntity } from "./entities/patient.entity";
 import { DocumentEntity } from "../files/entities/document.entity";
 import { DoctorEntity } from "./entities/doctor.entity";
 import { MedregistratorEntity } from "./entities/medregistrator.entity";
+import { DoctorSpecializationsEntity } from "./entities/doctor-specializations.entity";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MedregistratorEntity } from "./entities/medregistrator.entity";
       DocumentEntity,
       DoctorEntity,
       MedregistratorEntity,
+      DoctorSpecializationsEntity,
     ]),
   ],
   controllers: [UserController],

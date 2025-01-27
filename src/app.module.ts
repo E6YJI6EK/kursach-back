@@ -21,6 +21,8 @@ import { ConfigModule } from "@nestjs/config";
 import { FilesModule } from "./files/files.module";
 import { DocumentEntity } from "./files/entities/document.entity";
 import { MedregistratorEntity } from "./user/entities/medregistrator.entity";
+import { MedicalServicesEntity } from "./medical-services/entities/medical-services.entity";
+import { DoctorSpecializationsEntity } from "./user/entities/doctor-specializations.entity";
 
 @Module({
   providers: [
@@ -49,6 +51,8 @@ import { MedregistratorEntity } from "./user/entities/medregistrator.entity";
         FilialEntity,
         DocumentEntity,
         MedregistratorEntity,
+        MedicalServicesEntity,
+        DoctorSpecializationsEntity,
       ],
       synchronize: true,
     }),

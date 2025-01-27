@@ -14,6 +14,7 @@ import { PatientEntity } from "../user/entities/patient.entity";
 import { DoctorEntity } from "../user/entities/doctor.entity";
 import { DocumentEntity } from "../files/entities/document.entity";
 import { MedregistratorEntity } from "../user/entities/medregistrator.entity";
+import { DoctorSpecializationsEntity } from "../user/entities/doctor-specializations.entity";
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { MedregistratorEntity } from "../user/entities/medregistrator.entity";
       DoctorEntity,
       DocumentEntity,
       MedregistratorEntity,
+      DoctorSpecializationsEntity,
     ]),
   ],
   controllers: [AuthController],

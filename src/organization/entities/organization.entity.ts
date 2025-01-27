@@ -13,6 +13,8 @@ export class OrganizationEntity {
   @Column({ nullable: true })
   org_description: string;
 
+
+
   @OneToMany(() => FilialEntity, (filial) => filial.organization)
   filials: FilialEntity[];
 

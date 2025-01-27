@@ -16,7 +16,7 @@ export class DoctorEntity {
   @PrimaryGeneratedColumn()
   doctor_id: number;
 
-  @OneToOne(() => UserEntity,  {
+  @OneToOne(() => UserEntity, {
     cascade: true,
     onUpdate: "CASCADE",
     onDelete: "CASCADE",
@@ -36,11 +36,12 @@ export class DoctorEntity {
   event: EventEntity;
 
   @Column()
-  specialization: string;
-
-  @Column()
   work_experience: number;
 
-  @OneToMany(() => DocumentEntity, (document) => document.doctor)
+  @OneToMany(() => DocumentEntity, (document) => document.doctor, {
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
   documents: DocumentEntity[];
 }

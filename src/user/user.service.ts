@@ -22,6 +22,7 @@ import { DocumentEntity } from "../files/entities/document.entity";
 import { PatientDataDto } from "./dto/patient-data.dto";
 import { DoctorDataDto } from "./dto/doctor-data.dto";
 import { MedregistratorEntity } from "./entities/medregistrator.entity";
+import { DoctorSpecializationsEntity } from "./entities/doctor-specializations.entity";
 
 @Injectable()
 export class UserService {
@@ -41,6 +42,8 @@ export class UserService {
     private medregistrarRepository: Repository<MedregistratorEntity>,
     @InjectRepository(FilialEntity)
     private filialRepository: Repository<FilialEntity>,
+    @InjectRepository(DoctorSpecializationsEntity)
+    private doctorSpecializatiionsRepository: Repository<DoctorSpecializationsEntity>,
   ) {}
 
   findById(id: number): Promise<UserEntity> {
@@ -56,7 +59,14 @@ export class UserService {
     });
     const doctor = await this.doctorRepository.findOne({
       where: { user: user },
+      relations: { filial: true },
     });
+    const specs = await this.doctorSpecializatiionsRepository.find({
+      relations: { doctors: true },
+    });
+    const docSpecs = specs.filter((spec) =>
+      spec.doctors.some((doc) => doc.doctor_id === doctor.doctor_id),
+    );
     const med = await this.medregistrarRepository.findOne({
       where: { user: user },
       relations: { filial: true },
@@ -65,7 +75,7 @@ export class UserService {
     return {
       userInfo: user,
       patientInfo: patient,
-      doctorInfo: doctor,
+      doctorInfo: { ...doctor, specializations: docSpecs },
       filialAddress: med?.filial.address,
     };
   }
@@ -173,7 +183,13 @@ export class UserService {
           "Doctor data is required for role 'Doctor'",
         );
       }
-      await this.createDoctor(doctorData, newUser);
+      if (!filialId) {
+        throw new BadRequestException("filialId is required for role 'Doctor'");
+      }
+      const filial = await this.filialRepository.findOne({
+        where: { filial_id: filialId },
+      });
+      await this.createDoctor(doctorData, newUser, filial);
     }
 
     if (role === Role.Medregistrator) {
@@ -212,13 +228,23 @@ export class UserService {
     return await this.medregistrarRepository.save(med);
   }
 
-  private async createDoctor(doctorData: DoctorDataDto, user: UserEntity) {
+  private async createDoctor(
+    doctorData: DoctorDataDto,
+    user: UserEntity,
+    filial: FilialEntity,
+  ) {
     const doctor = this.doctorRepository.create({
       work_experience: doctorData.workExperience,
-      specialization: doctorData.specialization,
+      filial,
       user,
     });
     await this.doctorRepository.save(doctor);
+
+    const specialization = await this.doctorSpecializatiionsRepository.findOne({
+      where: { id: doctorData.specializationId },
+    });
+    specialization.doctors = [doctor];
+    this.doctorSpecializatiionsRepository.save(specialization);
 
     const documentPromises = doctorData.documentsLinks.map((docLink) => {
       const document = this.documentRepository.create({
